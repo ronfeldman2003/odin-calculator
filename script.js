@@ -13,8 +13,20 @@ const equalls = document.getElementById("btn_=");
 equalls.addEventListener('click',equalls_fun);
 const clear = document.getElementById("btn_clear");
 clear.addEventListener('click',clear_fun);
+const dot = document.getElementById("btn_.");
+dot.addEventListener('click',dot_fun);
 
 
+function dot_fun(){
+    if(operator == ""){
+    if(main_display_text.indexOf('.')== -1){
+    main_display_text += this.textContent;
+    updateDisplay();}}
+    else if(main_display_text.slice(main_display_text.indexOf(operator)+1).indexOf('.')== -1){
+        main_display_text += this.textContent;
+        updateDisplay();
+    }
+}
 function clear_fun(){ //reset calculator
     number1 = 0 
     number2 = 0
@@ -33,6 +45,7 @@ function equalls_fun(){ //display calculations
     number2 = main_display_text.slice(main_display_text.indexOf(operator)+1);
     console.log(`display text:${main_display_text} num1:${number1} num2:${number2} operator:${operator}`);
     main_display_text = operate(number1,number2,operator);
+    main_display_text =Math.round((main_display_text + Number.EPSILON) * 100) / 100
     updateDisplay();
     number1 = 0 
     number2 = 0
