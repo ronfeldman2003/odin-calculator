@@ -5,6 +5,8 @@ let main_display_text = "";
 let top_display_text = "";
 const main_display = document.getElementsByClassName('screen_now')[0];
 const top_display = document.getElementsByClassName('screen_prev')[0];
+
+//#region EventListeners 
 const numberButtons = document.querySelectorAll(`button.number`);
 numberButtons.forEach(numberButton => numberButton.addEventListener('click',addNumToDisplay));
 const operatorButtons = document.querySelectorAll(`button.operator`);
@@ -15,8 +17,29 @@ const clear = document.getElementById("btn_clear");
 clear.addEventListener('click',clear_fun);
 const dot = document.getElementById("btn_.");
 dot.addEventListener('click',dot_fun);
+document.addEventListener('keypress',keyCheck);
 
+//#endregion
 
+//#region event functions
+function keyCheck(e){
+    const key = e.key;
+    if(key>0&&key<10){
+        main_display_text += key;
+        updateDisplay();
+    }else if(key=='+'||key=='-'||key=='/'||key=='*'){
+        if(operator != ""){
+            equalls_fun();
+        }
+        number1=main_display_text;
+        operator = key;
+        main_display_text += operator ;
+        updateDisplay();
+    }else if(key == "="){
+        equalls_fun();
+    }
+
+}
 function dot_fun(){
     if(operator == ""){
     if(main_display_text.indexOf('.')== -1){
@@ -36,10 +59,7 @@ function clear_fun(){ //reset calculator
     updateDisplay();
     main_display_text = ""
 }
-function updateDisplay(){ //update the display in the html
-    main_display.textContent = main_display_text
-    top_display.textContent=top_display_text;
-}
+
 function equalls_fun(){ //display calculations
     top_display_text=main_display_text; 
     number2 = main_display_text.slice(main_display_text.indexOf(operator)+1);
@@ -56,6 +76,7 @@ function addNumToDisplay(){// add pressed numbers to display
     main_display_text += this.textContent;
     updateDisplay();
 }
+
 function operatorPresed(e){ // do the calculations
     if(operator != ""){
         equalls_fun();
@@ -67,7 +88,16 @@ function operatorPresed(e){ // do the calculations
     updateDisplay();
     
 }
+//#endregion
 
+function updateDisplay(){ //update the display in the html
+    main_display.textContent = main_display_text
+    top_display.textContent=top_display_text;
+}
+
+
+
+//#region basic math
 function add(a,b){
     return parseFloat(a)+parseFloat(b);
 }
@@ -100,3 +130,4 @@ function operate(n1,n2,o){
             return null;
     }
 }
+//#endregion
