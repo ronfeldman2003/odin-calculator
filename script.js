@@ -26,7 +26,7 @@ document.addEventListener('keydown',keyCheck);
 //#region event functions
 function keyCheck(e){
     const key = e.key;  
-    if(key>0&&key<10){
+    if(key>=0&&key<10){
         main_display_text += key;
         updateDisplay();
     }else if(key=='+'||key=='-'||key=='/'||key=='*'){
