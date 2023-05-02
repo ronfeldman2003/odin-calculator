@@ -17,13 +17,15 @@ const clear = document.getElementById("btn_clear");
 clear.addEventListener('click',clear_fun);
 const dot = document.getElementById("btn_.");
 dot.addEventListener('click',dot_fun);
-document.addEventListener('keypress',keyCheck);
+const back = document.getElementById("btn_back");
+back.addEventListener('click',back_fun);
+document.addEventListener('keydown',keyCheck);
 
 //#endregion
 
 //#region event functions
 function keyCheck(e){
-    const key = e.key;
+    const key = e.key;  
     if(key>0&&key<10){
         main_display_text += key;
         updateDisplay();
@@ -35,10 +37,21 @@ function keyCheck(e){
         operator = key;
         main_display_text += operator ;
         updateDisplay();
-    }else if(key == "="){
+    }else if(key == "="||key == "Enter"){
         equalls_fun();
     }
+    else if(key == "Backspace"){
 
+        back_fun();
+    }
+}
+function back_fun(){
+    main_display_text = main_display.textContent;
+    main_display_text = main_display_text.slice(0,-1);
+    if(main_display_text.indexOf(operator) == -1){
+        operator = "";
+    }
+    updateDisplay();
 }
 function dot_fun(){
     if(operator == ""){
@@ -62,10 +75,12 @@ function clear_fun(){ //reset calculator
 
 function equalls_fun(){ //display calculations
     top_display_text=main_display_text; 
-    number2 = main_display_text.slice(main_display_text.indexOf(operator)+1);
-    console.log(`display text:${main_display_text} num1:${number1} num2:${number2} operator:${operator}`);
-    main_display_text = operate(number1,number2,operator);
-    main_display_text =Math.round((main_display_text + Number.EPSILON) * 100) / 100
+    if(operator != ""){
+        number2 = main_display_text.slice(main_display_text.indexOf(operator)+1);
+        console.log(`display text:${main_display_text} num1:${number1} num2:${number2} operator:${operator}`);
+        main_display_text = operate(number1,number2,operator);
+        main_display_text =Math.round((main_display_text + Number.EPSILON) * 100) / 100
+    }
     updateDisplay();
     number1 = 0 
     number2 = 0
